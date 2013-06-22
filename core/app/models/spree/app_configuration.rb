@@ -51,7 +51,7 @@ module Spree
     preference :hide_cents, :boolean, default: false
     preference :last_check_for_spree_alerts, :string, default: nil
     preference :layout, :string, default: 'spree/layouts/spree_application'
-    preference :logo, :string, default: 'admin/bg/spree_50.png'
+    preference :logo, :string, default: 'bg/spree_50.png'
     preference :max_level_in_taxons_menu, :integer, default: 1 # maximum nesting level in taxons menu
     preference :orders_per_page, :integer, default: 15
     preference :prices_inc_tax, :boolean, default: false
