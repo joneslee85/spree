@@ -57,6 +57,6 @@ module Spree
 end
 
 RSpec.configure do |config|
-  config.extend Spree::TestingSupport::AuthorizationHelpers::Controller, :type => :controller
-  config.extend Spree::TestingSupport::AuthorizationHelpers::Request, :type => :request
+  config.extend Spree::TestingSupport::AuthorizationHelpers::Controller, type: :controller
+  config.extend Spree::TestingSupport::AuthorizationHelpers::Request,    type: :feature
 end
