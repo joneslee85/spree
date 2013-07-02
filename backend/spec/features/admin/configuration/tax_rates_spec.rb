@@ -11,7 +11,7 @@ describe "Tax Rates" do
   end
 
   # Regression test for #535
-  it "can see a tax rate in the list if the tax category has been deleted" do
+  it "can see a tax rate in the list if the tax category has been deleted", :js => true do
     tax_rate.tax_category.mark_deleted!
     lambda { click_link "Tax Rates" }.should_not raise_error
     within("table tbody td:nth-child(3)") do

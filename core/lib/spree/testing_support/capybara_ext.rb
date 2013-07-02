@@ -128,6 +128,8 @@ RSpec.configure do |c|
 end
 
 Capybara.configure do |config|
-  config.match = :prefer_exact
-  config.ignore_hidden_elements = false
+  config.match = :smart
+  config.exact = false
+  # config.match = :prefer_exact
+  config.ignore_hidden_elements = true
 end

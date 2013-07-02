@@ -10,7 +10,7 @@ describe "Zones" do
   end
 
   context "show" do
-    it "should display existing zones" do
+    it "should display existing zones", :js => true do
       create(:zone, :name => "eastern", :description => "zone is eastern")
       create(:zone, :name => "western", :description => "cool san fran")
       click_link "Zones"

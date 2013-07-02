@@ -44,22 +44,21 @@ describe "Customer Details" do
       end
     end
 
-    it "should be able to update customer details for an existing order" do
+    it "should be able to update customer details for an existing order", :js => true do
       order.ship_address = create(:address)
       order.save!
 
       click_link "Customer Details"
-      within("#shipping") { fill_in_address "ship" }
-      within("#billing") { fill_in_address "bill" }
+      fill_in_address "ship"
+      fill_in_address "bill"
 
       click_button "Update"
       click_link "Customer Details"
-
-      find_field('order_ship_address_attributes_firstname').value.should == "John 99"
+      find('order_ship_address_attributes_firstname', :visible => true).value.should == "John 99"
       # Regression test for #2950 + #2433
       # This act should transition the state of the order as far as it will go too
       within("#order_tab_summary") do
-        find(".state").text.should == "COMPLETE"
+        find("#order_state").text(:visiable).should == "COMPLETE"
       end
     end
   end
@@ -71,7 +70,7 @@ describe "Customer Details" do
   end
 
   # Regression test for #942
-  context "errors when no shipping methods are available" do
+  context "errors when no shipping methods are available", :js => true do
     before do
       Spree::ShippingMethod.delete_all
     end
@@ -79,28 +78,20 @@ describe "Customer Details" do
     specify do
       click_link "Customer Details"
       # Need to fill in valid information so it passes validations
-      fill_in "order_ship_address_attributes_firstname",  :with => "John 99"
-      fill_in "order_ship_address_attributes_lastname",   :with => "Doe"
-      fill_in "order_ship_address_attributes_lastname",   :with => "Company"
-      fill_in "order_ship_address_attributes_address1",   :with => "100 first lane"
-      fill_in "order_ship_address_attributes_address2",   :with => "#101"
-      fill_in "order_ship_address_attributes_city",       :with => "Bethesda"
-      fill_in "order_ship_address_attributes_zipcode",    :with => "20170"
-      fill_in "order_ship_address_attributes_state_name", :with => "Alabama"
-      fill_in "order_ship_address_attributes_phone",     :with => "123-456-7890"
+      fill_in_address('ship')
       lambda { click_button "Continue" }.should_not raise_error(NoMethodError)
     end
   end
 
-  def fill_in_address(kind = "bill")
-    fill_in "First Name",              :with => "John 99"
-    fill_in "Last Name",               :with => "Doe"
-    fill_in "Company",                 :with => "Company"
-    fill_in "Street Address",          :with => "100 first lane"
-    fill_in "Street Address (cont'd)", :with => "#101"
-    fill_in "City",                    :with => "Bethesda"
-    fill_in "Zip",                     :with => "20170"
+  def fill_in_address(kind = 'bill')
+    fill_in "order_#{kind}_address_attributes_firstname",   :with => "John 99"
+    fill_in "order_#{kind}_address_attributes_lastname",    :with => "Doe"
+    fill_in "order_#{kind}_address_attributes_company",     :with => "Company"
+    fill_in "order_#{kind}_address_attributes_address1",    :with => "100 first lane"
+    fill_in "order_#{kind}_address_attributes_address1",    :with => "#101"
+    fill_in "order_#{kind}_address_attributes_city",        :with => "Bethesda"
+    fill_in "order_#{kind}_address_attributes_zipcode",     :with => "20170"
     targetted_select2 "Alabama",       :from => "#s2id_order_#{kind}_address_attributes_state_id"
-    fill_in "Phone",                   :with => "123-456-7890"
+    fill_in "order_#{kind}_address_attributes_phone",       :with => "123-456-7890"
   end
 end

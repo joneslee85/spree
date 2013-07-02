@@ -46,13 +46,13 @@ describe "New Order" do
   end
 
   def fill_in_address(kind = "bill")
-    fill_in "First Name",              :with => "John 99"
-    fill_in "Last Name",               :with => "Doe"
-    fill_in "Street Address",          :with => "100 first lane"
-    fill_in "Street Address (cont'd)", :with => "#101"
-    fill_in "City",                    :with => "Bethesda"
-    fill_in "Zip",                     :with => "20170"
+    fill_in "order_#{kind}_address_attributes_firstname", :with => "John 99"
+    fill_in "order_#{kind}_address_attributes_lastname",  :with => "Doe"
+    fill_in "order_#{kind}_address_attributes_address1",  :with => "100 first lane"
+    fill_in "order_#{kind}_address_attributes_address2",  :with => "#101"
+    fill_in "order_#{kind}_address_attributes_city",      :with => "Bethesda"
+    fill_in "order_#{kind}_address_attributes_zipcode",   :with => "20170"
     targetted_select2_search state.name, :from => "#s2id_order_#{kind}_address_attributes_state_id"
-    fill_in "Phone",                   :with => "123-456-7890"
+    fill_in "order_#{kind}_address_attributes_phone",     :with => "123-456-7890"
   end
 end

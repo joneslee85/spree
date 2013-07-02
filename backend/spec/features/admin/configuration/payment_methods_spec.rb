@@ -9,10 +9,12 @@ describe "Payment Methods" do
   end
 
   context "admin visiting payment methods listing page" do
-    it "should display existing payment methods" do
+    it "should display existing payment methods", :js => true do
       create(:payment_method)
       click_link "Payment Methods"
 
+      sleep(5)
+      page!
       within("table#listing_payment_methods") do
         find('th:nth-child(1)').text.should == "Name"
         find('th:nth-child(2)').text.should == "Provider"

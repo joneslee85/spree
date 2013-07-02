@@ -21,7 +21,8 @@ describe "Order Details", js: true do
     before { visit spree.edit_admin_order_path(order) }
 
     context "edit order page" do
-      it "should allow me to edit order details" do
+      it "should allow me to edit order details", :js => true do
+
         page.should have_content("spree t-shirt")
         page.should have_content("$40.00")
 
@@ -30,21 +31,20 @@ describe "Order Details", js: true do
           fill_in "quantity", :with => "1"
         end
         click_icon :ok
-
-        page.should have_content("Total: $20.00")
+        page.should have_content("TOTAL: $20.00")
       end
 
-      it "can add an item to a shipment" do
+      it "can add an item to a shipment", :js => true do
         select2_search "Tote", :from => Spree.t(:name_or_sku)
         within("table.stock-levels") do
           fill_in "stock_item_quantity", :with => 2
           click_icon :plus
         end
 
-        page.should have_content("Total: $70.00")
+        page.should have_content("TOTAL: $70.00")
       end
 
-      it "can remove an item from a shipment" do
+      it "can remove an item from a shipment", :js => true do
         page.should have_content("spree t-shirt")
 
         within_row(1) do
@@ -56,7 +56,7 @@ describe "Order Details", js: true do
         page.should_not have_content("spree t-shirt")
       end
 
-      it "can add tracking information" do
+      it "can add tracking information", :js => true do
         within("table.index tr:nth-child(5)") do
           click_icon :edit
         end
@@ -66,7 +66,7 @@ describe "Order Details", js: true do
         page.should have_content("Tracking: FOOBAR")
       end
 
-      it "can change the shipping method" do
+      it "can change the shipping method", :js => true do
         order = create(:completed_order_with_totals)
         visit spree.edit_admin_order_path(order)
         within("table.index tr.show-method") do
@@ -93,16 +93,16 @@ describe "Order Details", js: true do
         let!(:london) { create(:stock_location, name: "London") }
         before(:each) { london.stock_items.each { |si| si.adjust_count_on_hand(10) } }
 
-        it "creates a new shipment when adding a variant from the new location" do
+        it "creates a new shipment when adding a variant from the new location", :js => true do
           select2_search "Tote", :from => Spree.t(:name_or_sku)
           within("table.stock-levels tr:nth-child(2)") do
             fill_in "stock_item_quantity", :with => 2
             click_icon :plus
           end
-          page.should have_css('table.stock-contents:nth-child(2)')
+          page.should have_selector('table.stock-contents:nth-of-type(2)', visible: true)
           page.all("table.stock-contents").count.should == 2
           order.shipments.last.stock_location.should == london
-          page.should have_content("London")
+          page.should have_content("LONDON")
         end
 
         context "when two shipments exist" do
@@ -114,9 +114,9 @@ describe "Order Details", js: true do
             end
           end
 
-          it "updates quantity of the second shipment's items" do
+          it "updates quantity of the second shipment's items", :js => true do
             within("table.stock-contents", :text => tote.name) do
-              click_icon :edit
+              find('.icon-edit:nth-of-type(1)', :visible => true).click
               fill_in "quantity", with: 4
               click_icon :ok
             end

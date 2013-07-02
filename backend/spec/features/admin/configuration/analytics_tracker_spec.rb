@@ -15,7 +15,8 @@ describe "Analytics Tracker" do
       page.should have_content("Analytics Trackers")
     end
 
-    it "should have the right tabular values displayed" do
+    it "should have the right tabular values displayed", :js => true do
+
       within_row(1) do
         column_text(1).should == "A100"
         column_text(2).should == "Test"

@@ -9,7 +9,7 @@ describe "Taxonomies" do
   end
 
   context "show" do
-    it "should display existing taxonomies" do
+    it "should display existing taxonomies", :js => true do
       create(:taxonomy, :name => 'Brand')
       create(:taxonomy, :name => 'Categories')
       click_link "Taxonomies"

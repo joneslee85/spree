@@ -14,7 +14,7 @@ describe "Orders Listing" do
       click_link "Orders"
     end
 
-    it "should list existing orders" do
+    it "should list existing orders", :js => true do
       within_row(1) do
         column_text(2).should == "R100"
         column_text(3).should == "cart"
@@ -25,7 +25,7 @@ describe "Orders Listing" do
       end
     end
 
-    it "should be able to sort the orders listing" do
+    it "should be able to sort the orders listing", :js => true do
       # default is completed_at desc
       within_row(1) { page.should have_content("R100") }
       within_row(2) { page.should have_content("R200") }
